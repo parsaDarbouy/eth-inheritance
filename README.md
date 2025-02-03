@@ -43,9 +43,6 @@ make test
 # Deploy to network (default: localhost)
 make deploy NETWORK=<network_name>
 
-# Verify contract on Etherscan
-make verify NETWORK=<network_name> CONTRACT_ADDRESS=<address> CONSTRUCTOR_ARGS=<args>
-
 # Check test coverage
 make coverage
 
