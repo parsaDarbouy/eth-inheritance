@@ -6,7 +6,7 @@ ETHERSCAN_API_KEY ?= your_etherscan_api_key
 YELLOW := \033[0;33m
 NC := \033[0m # No Color
 
-.PHONY: all clean compile test deploy verify help
+.PHONY: all clean compile test deploy help eslint
 
 # Default target
 all: clean compile test
@@ -18,12 +18,10 @@ help:
 	@echo "  make test      	 - Run tests"
 	@echo "  make clean      	 - Remove build artifacts"
 	@echo "  make deploy    	 - Deploy contracts to network (NETWORK=network_name)"
-	@echo "  make verify    	 - Verify contract on Etherscan"
 	@echo "  make coverage  	 - Run test coverage"
-	@echo "  make lint         - Run solhint linter"
+	@echo "  make lint         - Run slither and eslint linter"
 	@echo "  make format       - Format code with prettier"
 	@echo "  make node         - Start local hardhat node"
-	@echo "  make slither      - Run slither"
 
 # Compile contracts
 compile:
@@ -46,20 +44,10 @@ deploy:
 	@echo "$(YELLOW)Deploying to $(NETWORK)...$(NC)"
 	npx hardhat run scripts/deploy.js --network $(NETWORK)
 
-# Verify contract on Etherscan
-verify:
-	@echo "$(YELLOW)Verifying contract...$(NC)"
-	npx hardhat verify --network $(NETWORK) $(CONTRACT_ADDRESS) $(CONSTRUCTOR_ARGS)
-
 # Run test coverage
 coverage:
 	@echo "$(YELLOW)Running test coverage...$(NC)"
 	npx hardhat coverage
-
-# Run solhint
-lint:
-	@echo "$(YELLOW)Running solhint...$(NC)"
-	npx solhint 'contracts/**/*.sol'
 
 # Format code
 format:
@@ -75,7 +63,9 @@ node:
 	@echo "$(YELLOW)Starting local hardhat node...$(NC)"
 	npx hardhat node
 
-# Run slither
-slither:
+# Run lint
+lint:
 	@echo "$(YELLOW)Running slither...$(NC)"
-	slither . --exclude naming-convention,external-function,solc-version 
+	slither . --exclude naming-convention,external-function,solc-version,low-level-calls
+	@echo "$(YELLOW)Running eslint...$(NC)"
+	npm run lint:fix

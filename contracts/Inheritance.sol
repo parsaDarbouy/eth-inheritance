@@ -97,7 +97,7 @@ contract Inheritance {
         address previousOwner = owner;
         owner = heir;
         heir = address(0); // Reset heir after inheritance
-        lastActivity = block.timestamp;
+        updateActivity();
         emit OwnershipTransferred(previousOwner, owner);
     }
 
