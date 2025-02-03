@@ -139,6 +139,16 @@ describe("Inheritance", function () {
       // Verify new heir is set
       expect(await inheritance.heir()).to.equal(other.address);
     });
+
+    it("Should not allow non-heir to claim inheritance", async function () {
+      // Fast forward time by 31 days to pass timelock
+      await time.increase(ONE_MONTH + 86400);
+
+      // Try to claim inheritance with non-heir account
+      await expect(
+        inheritance.connect(other).claimInheritance(),
+      ).to.be.revertedWithCustomError(inheritance, "NotHeir");
+    });
   });
 
   describe("Receive function", function () {
