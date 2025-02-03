@@ -6,7 +6,7 @@ ETHERSCAN_API_KEY ?= your_etherscan_api_key
 YELLOW := \033[0;33m
 NC := \033[0m # No Color
 
-.PHONY: all clean compile test deploy help eslint
+.PHONY: all clean compile test deploy coverage lint help
 
 # Default target
 all: clean compile test
@@ -63,9 +63,14 @@ node:
 	@echo "$(YELLOW)Starting local hardhat node...$(NC)"
 	npx hardhat node
 
-# Run lint
-lint:
+slither:
 	@echo "$(YELLOW)Running slither...$(NC)"
 	slither . --exclude naming-convention,external-function,solc-version,low-level-calls
+
+eslint:
 	@echo "$(YELLOW)Running eslint...$(NC)"
 	npm run lint:fix
+
+# Run lints
+lint: slither eslint
+
