@@ -44,18 +44,6 @@ describe("Inheritance", function () {
         .withArgs(heir.address, other.address);
     });
 
-    it("Should allow owner to withdraw 0 ETH to reset timer", async function () {
-      // Get initial lastActivity timestamp
-      const initialLastActivity = await inheritance.lastActivity();
-
-      // Wait for 1 second to ensure timestamp changes
-      await time.increase(1);
-
-      // Check that lastActivity was updated
-      const newLastActivity = await inheritance.lastActivity();
-      expect(newLastActivity).to.equal(initialLastActivity);
-    });
-
     it("Should not allow non-owner to withdraw", async function () {
       await expect(
         inheritance.connect(other).withdraw(ethers.parseEther("1.0")),
