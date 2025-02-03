@@ -6,8 +6,8 @@ This project implements an Ethereum smart contract that enables secure inheritan
 
 - Owner can deposit and withdraw ETH
 - Owner can designate and update heir
-- Automatic inheritance after 30 days of owner inactivity
-- Activity tracking through withdrawals and manual pings
+- The heir can claim the contract after 30 days of owner inactivity
+- Activity tracking through withdrawals 
 - Security measures to prevent unauthorized inheritance claims
 
 ## Contract Functions
